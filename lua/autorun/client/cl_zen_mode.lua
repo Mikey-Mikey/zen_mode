@@ -38,7 +38,7 @@ net.Receive( "SetZenMode", function()
 end )
 
 hook.Add( "OnEntityCreated", "ZenMode_SyncClient", function( ent )
-    if IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) then
+    if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) then
         ent.oldRenderOverride = ent.RenderOverride
         ent.RenderOverride = RenderZen
     end
