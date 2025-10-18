@@ -16,7 +16,6 @@ function ply_meta:SetZenMode( b )
 
     self:SetNWBool( "ZenMode", b )
     net.Start( "SetZenMode" )
-    net.WritePlayer( self )
     net.WriteBool( b )
     net.Broadcast()
 end

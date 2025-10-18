@@ -23,7 +23,6 @@ local function RenderZen( self )
 end
 
 net.Receive( "SetZenMode", function()
-    local ply = net.ReadPlayer()
     local state = net.ReadBool()
 
     if state then
