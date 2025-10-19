@@ -1,17 +1,20 @@
 util.AddNetworkString( "SetZenMode" )
 
 local function CPPIGetTopOwner( ent )
+    if not IsValid( ent ) then return end
+
     local topParent = ent
-    while true do
-        local parent = topParent:GetParent()
-        if not IsValid( parent ) then break end
-        topParent = parent
+
+    while IsValid( topParent:GetParent() ) do
+        topParent = topParent:GetParent()
     end
+
     return topParent:CPPIGetOwner()
 end
 
 local function IsOwnerZen( ent )
-    return IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetNWBool( "ZenMode" )
+    local owner = ent:CPPIGetOwner() or CPPIGetTopOwner( ent )
+    return IsValid( owner ) and owner:GetZenMode()
 end
 
 hook.Add( "PlayerInitialSpawn", "InitZenMode", function( ply )

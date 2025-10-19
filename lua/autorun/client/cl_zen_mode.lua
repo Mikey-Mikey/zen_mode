@@ -13,7 +13,7 @@ local function CPPIGetTopOwner( ent )
 end
 
 local function IsOwnerZen( ent )
-    local owner = CPPIGetTopOwner( ent )
+    local owner = ent:CPPIGetOwner() or CPPIGetTopOwner( ent )
     return IsValid( owner ) and owner:GetZenMode()
 end
 
