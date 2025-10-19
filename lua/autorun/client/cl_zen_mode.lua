@@ -22,11 +22,11 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
-        --[[
+
         if ent.oldRenderOverride ~= nil then
             ent.oldRenderOverride()
         end
-        ]]
+
         ent:DrawModel()
         return
     end
@@ -47,11 +47,11 @@ local function RenderZen( ent )
         end
     end
 
-    --[[
+
     if ent.oldRenderOverride ~= nil then
         ent.oldRenderOverride()
     end
-    ]]
+
     ent:DrawModel()
 end
 
