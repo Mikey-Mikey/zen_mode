@@ -27,11 +27,7 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
-        if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
-            ent:DrawModel()
-        else
-            ent:DrawModel( STUDIO_TWOPASS )
-        end
+        ent:DrawModel()
         return
     end
 
@@ -50,12 +46,7 @@ local function RenderZen( ent )
             render.SetBlend( cl_zenmode_opacity:GetFloat() )
         end
     end
-
-    if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
-        ent:DrawModel()
-    else
-        ent:DrawModel( STUDIO_TWOPASS )
-    end
+    ent:DrawModel()
 end
 
 net.Receive( "SetZenMode", function()
