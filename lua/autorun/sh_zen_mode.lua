@@ -18,7 +18,7 @@ hook.Add( "ShouldCollide", "ZenMode_ResolveCollisions", function( ent1, ent2 )
         return false
     end
 
-    -- Player vs player collision
+    -- Player vs Player collision
     if ent1:IsPlayer() and ent2:IsPlayer() and ( ent1:GetNWBool( "ZenMode" ) or ent2:GetNWBool( "ZenMode" ) ) then
         return false
     end

@@ -1,3 +1,5 @@
+local cl_zenmode_opacity = CreateClientConVar( "cl_zenmode_renderopacity", 0.15, true, false, "opacity of zen mode entities", 0, 1 )
+
 local function CPPIGetTopOwner( ent )
     local topParent = ent
     while true do
@@ -21,15 +23,15 @@ local function RenderZen( self )
     end
 
     if ( IsOwnerZen( self ) or LocalPlayer():GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( self ) ~= LocalPlayer() and not self:IsWeapon() then
-        render.SetBlend( 0.25 )
+        render.SetBlend( cl_zenmode_opacity:GetFloat() )
     end
 
     if ( LocalPlayer():GetNWBool( "ZenMode" ) or self:GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( self ) ~= LocalPlayer() and not self:IsWeapon() then
-        render.SetBlend( 0.25 )
+        render.SetBlend( cl_zenmode_opacity:GetFloat() )
     end
 
     if self:IsWeapon() and ( self:GetOwner():GetNWBool( "ZenMode" ) or LocalPlayer():GetNWBool( "ZenMode" )  ) and self:GetOwner() ~= LocalPlayer() then
-        render.SetBlend( 0.25 )
+        render.SetBlend( cl_zenmode_opacity:GetFloat() )
     end
 
     self:DrawModel()
