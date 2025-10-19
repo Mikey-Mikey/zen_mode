@@ -33,8 +33,11 @@ local function RenderZen( self )
     if self:IsWeapon() and ( self:GetOwner():GetNWBool( "ZenMode" ) or LocalPlayer():GetNWBool( "ZenMode" )  ) and self:GetOwner() ~= LocalPlayer() then
         render.SetBlend( cl_zenmode_opacity:GetFloat() )
     end
-
-    self:DrawModel()
+    if self.oldRenderOverride then
+        self.oldRenderOverride()
+    else
+        self:DrawModel()
+    end
 end
 
 net.Receive( "SetZenMode", function()
