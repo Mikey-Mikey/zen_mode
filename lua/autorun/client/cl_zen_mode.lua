@@ -27,11 +27,7 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
-        if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
-            ent:DrawModel()
-        else
-            ent:DrawModel( STUDIO_DRAWTRANSLUCENTSUBMODELS )
-        end
+        ent:DrawModel( STUDIO_TWOPASS )
         return
     end
 
@@ -39,11 +35,7 @@ local function RenderZen( ent )
 
     -- Draw the model to set the Depth Buffer values
 
-    if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
-        ent:DrawModel()
-    else
-        ent:DrawModel( STUDIO_DRAWTRANSLUCENTSUBMODELS )
-    end
+    ent:DrawModel( STUDIO_TWOPASS )
 
     -- Start drawing normally again
     render.OverrideColorWriteEnable( false, false )
@@ -64,11 +56,7 @@ local function RenderZen( ent )
         end
     end
 
-    if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
-        ent:DrawModel()
-    else
-        ent:DrawModel( STUDIO_DRAWTRANSLUCENTSUBMODELS )
-    end
+    ent:DrawModel( STUDIO_TWOPASS )
 
     render.SetBlend( 1 )
 end
