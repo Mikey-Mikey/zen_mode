@@ -79,9 +79,7 @@ net.Receive( "SetZenMode", function()
     if state then
         for _, v in ents.Iterator() do
             if IsValid( v ) then
-                if v.oldRenderOverride == nil then
-                    v.oldRenderOverride = v.RenderOverride
-                end
+                v.oldRenderOverride = v.RenderOverride
                 v.RenderOverride = RenderZen
             end
         end
