@@ -25,9 +25,10 @@ local function RenderZen( ent )
 
         if ent.oldRenderOverride ~= nil then
             ent.oldRenderOverride()
+        else
+            ent:DrawModel( STUDIO_TWOPASS )
         end
 
-        ent:DrawModel( STUDIO_TWOPASS )
         return
     end
 
@@ -50,9 +51,9 @@ local function RenderZen( ent )
 
     if ent.oldRenderOverride ~= nil then
         ent.oldRenderOverride()
+    else
+        ent:DrawModel( STUDIO_TWOPASS )
     end
-
-    ent:DrawModel( STUDIO_TWOPASS )
 end
 
 net.Receive( "SetZenMode", function()
