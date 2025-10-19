@@ -31,7 +31,7 @@ local function RenderZen( ent )
         return
     end
 
-    render.OverrideColorWriteEnable( true, true )
+    render.OverrideColorWriteEnable( true, false )
 
     -- Draw the model to set the Depth Buffer values
 
