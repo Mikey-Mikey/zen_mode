@@ -2,12 +2,13 @@ local cl_zenmode_opacity = CreateClientConVar( "cl_zenmode_renderopacity", 0.15,
 
 local function CPPIGetTopOwner( ent )
     if not IsValid( ent ) then return end
+
     local topParent = ent
-    while true do
-        local parent = topParent:GetParent()
-        if not IsValid( parent ) then break end
-        topParent = parent
+
+    while IsValid( topParent:GetParent() ) do
+        topParent = topParent:GetParent()
     end
+
     return topParent:CPPIGetOwner()
 end
 
@@ -30,17 +31,22 @@ local function RenderZen( ent )
         return
     end
 
-    if ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() and not ent:IsWeapon() then
-        render.SetBlend( cl_zenmode_opacity:GetFloat() )
+    if ent:IsWeapon() then -- Weapon rendering
+        if ( ent:GetOwner():GetNWBool( "ZenMode" ) or LocalPlayer():GetNWBool( "ZenMode" )  ) and ent:GetOwner() ~= LocalPlayer() then
+            render.SetBlend( cl_zenmode_opacity:GetFloat() )
+        end
+    else
+        -- Entity rendering
+        if not ent:IsPlayer() and ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() then
+            render.SetBlend( cl_zenmode_opacity:GetFloat() )
+        end
+
+        -- Player Rendering
+        if ent:IsPlayer() and ( LocalPlayer():GetNWBool( "ZenMode" ) or ent:GetNWBool( "ZenMode" ) ) then
+            render.SetBlend( cl_zenmode_opacity:GetFloat() )
+        end
     end
 
-    if ( LocalPlayer():GetNWBool( "ZenMode" ) or ent:GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() and not ent:IsWeapon() then
-        render.SetBlend( cl_zenmode_opacity:GetFloat() )
-    end
-
-    if ent:IsWeapon() and ( ent:GetOwner():GetNWBool( "ZenMode" ) or LocalPlayer():GetNWBool( "ZenMode" )  ) and ent:GetOwner() ~= LocalPlayer() then
-        render.SetBlend( cl_zenmode_opacity:GetFloat() )
-    end
     --[[
     if ent.oldRenderOverride ~= nil then
         ent.oldRenderOverride()
