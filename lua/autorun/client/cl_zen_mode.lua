@@ -27,7 +27,11 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
-        ent:DrawModel()
+        if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
+            ent:DrawModel()
+        else
+            ent:DrawModel( STUDIO_DRAWTRANSLUCENTSUBMODELS )
+        end
         return
     end
 
@@ -47,7 +51,11 @@ local function RenderZen( ent )
         end
     end
 
-    ent:DrawModel()
+    if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
+        ent:DrawModel()
+    else
+        ent:DrawModel( STUDIO_DRAWTRANSLUCENTSUBMODELS )
+    end
 end
 
 net.Receive( "SetZenMode", function()
