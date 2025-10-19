@@ -3,6 +3,10 @@ local cl_zenmode_opacity = CreateClientConVar( "cl_zenmode_renderopacity", 0.15,
 local function CPPIGetTopOwner( ent )
     if not IsValid( ent ) then return end
 
+    if IsValid( ent:CPPIGetOwner() ) then
+        return ent:CPPIGetOwner()
+    end
+
     local topParent = ent
 
     while IsValid( topParent:GetParent() ) do
@@ -13,7 +17,7 @@ local function CPPIGetTopOwner( ent )
 end
 
 local function IsOwnerZen( ent )
-    local owner = ent:CPPIGetOwner() or CPPIGetTopOwner( ent )
+    local owner = CPPIGetTopOwner( ent )
     return IsValid( owner ) and owner:GetZenMode()
 end
 
@@ -33,7 +37,7 @@ local function RenderZen( ent )
         end
     else
         -- Entity rendering
-        if not ent:IsPlayer() and ( IsOwnerZen( ent ) or LocalPlayer():GetZenMode() ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() and ent:CPPIGetOwner() ~= LocalPlayer() then
+        if not ent:IsPlayer() and ( IsOwnerZen( ent ) or LocalPlayer():GetZenMode() ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() then
             render.SetBlend( cl_zenmode_opacity:GetFloat() )
         end
 
