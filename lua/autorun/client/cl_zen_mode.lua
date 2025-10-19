@@ -27,14 +27,22 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
-        ent:DrawModel()
+        if ent.oldRenderOverride ~= nil then
+            ent.oldRenderOverride( ent )
+        else
+            ent:DrawModel()
+        end
         return
     end
 
     render.OverrideColorWriteEnable( true, false )
 
     -- Draw the model to set the Depth Buffer values
-    ent:DrawModel()
+    if ent.oldRenderOverride ~= nil then
+        ent.oldRenderOverride( ent )
+    else
+        ent:DrawModel()
+    end
 
     -- Start drawing normally again
     render.OverrideColorWriteEnable( false, false )
@@ -55,7 +63,11 @@ local function RenderZen( ent )
         end
     end
 
-    ent:DrawModel()
+    if ent.oldRenderOverride ~= nil then
+        ent.oldRenderOverride( ent )
+    else
+        ent:DrawModel()
+    end
 
     render.SetBlend( 1 )
 end
