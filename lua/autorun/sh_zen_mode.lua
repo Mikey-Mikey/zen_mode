@@ -1,10 +1,20 @@
+local function CPPIGetTopOwner( ent )
+    local topParent = ent
+    while true do
+        local parent = topParent:GetParent()
+        if not IsValid( parent ) then break end
+        topParent = parent
+    end
+    return topParent:CPPIGetOwner()
+end
+
 local function IsOwnerZen( ent )
-    return IsValid( ent:CPPIGetOwner() ) and ent:CPPIGetOwner():GetNWBool( "ZenMode" )
+    return IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetNWBool( "ZenMode" )
 end
 
 hook.Add( "ShouldCollide", "ZenMode_ResolveCollisions", function( ent1, ent2 )
     -- Entity vs Entity collision
-    if IsValid( ent1:CPPIGetOwner() ) and IsValid( ent2:CPPIGetOwner() ) and ent2:CPPIGetOwner() ~= ent1:CPPIGetOwner() and ( ent1:CPPIGetOwner():GetNWBool( "ZenMode" ) or ent2:CPPIGetOwner():GetNWBool( "ZenMode" ) ) then
+    if IsValid( CPPIGetTopOwner( ent1 ) ) and IsValid( CPPIGetTopOwner( ent2 ) ) and CPPIGetTopOwner( ent2 ) ~= CPPIGetTopOwner( ent1 ) and ( CPPIGetTopOwner( ent1 ):GetNWBool( "ZenMode" ) or CPPIGetTopOwner( ent2 ):GetNWBool( "ZenMode" ) ) then
         return false
     end
 
@@ -14,17 +24,17 @@ hook.Add( "ShouldCollide", "ZenMode_ResolveCollisions", function( ent1, ent2 )
     end
 
     -- Player vs Entity collision
-    if ent1:IsPlayer() ~= ent2:IsPlayer() and ( ent1:GetNWBool( "ZenMode" ) or ent2:GetNWBool( "ZenMode" ) or IsOwnerZen( ent1 ) or IsOwnerZen( ent2 ) ) and ent1:CPPIGetOwner() ~= ent2 and ent1 ~= ent2:CPPIGetOwner() then
+    if ent1:IsPlayer() ~= ent2:IsPlayer() and ( ent1:GetNWBool( "ZenMode" ) or ent2:GetNWBool( "ZenMode" ) or IsOwnerZen( ent1 ) or IsOwnerZen( ent2 ) ) and CPPIGetTopOwner( ent1 ) ~= ent2 and ent1 ~= CPPIGetTopOwner( ent2 ) then
         return false
     end
 end )
 
 hook.Add( "GravGunPunt", "ZenMode_GravGunPunt", function( ply, ent )
-    if IsValid( ent:CPPIGetOwner() ) and ent:CPPIGetOwner():GetNWBool( "ZenMode" ) and ply ~= ent:CPPIGetOwner() then
+    if IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetNWBool( "ZenMode" ) and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 
-    if ply:GetNWBool( "ZenMode" ) and ply ~= ent:CPPIGetOwner() then
+    if ply:GetNWBool( "ZenMode" ) and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 end )
@@ -33,11 +43,11 @@ hook.Add( "CanTool", "ZenMode_CanTool", function( ply, tr )
     if not IsValid( tr.Entity ) then return end
     local ent = tr.Entity
 
-    if IsOwnerZen( ent ) and ply ~= ent:CPPIGetOwner() then
+    if IsOwnerZen( ent ) and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 
-    if ply:GetNWBool( "ZenMode" ) and ply ~= ent:CPPIGetOwner() then
+    if ply:GetNWBool( "ZenMode" ) and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 end )

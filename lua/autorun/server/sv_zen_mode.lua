@@ -1,7 +1,17 @@
 util.AddNetworkString( "SetZenMode" )
 
+local function CPPIGetTopOwner( ent )
+    local topParent = ent
+    while true do
+        local parent = topParent:GetParent()
+        if not IsValid( parent ) then break end
+        topParent = parent
+    end
+    return topParent:CPPIGetOwner()
+end
+
 local function IsOwnerZen( ent )
-    return IsValid( ent:CPPIGetOwner() ) and ent:CPPIGetOwner():GetNWBool( "ZenMode" )
+    return IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetNWBool( "ZenMode" )
 end
 
 hook.Add( "PlayerInitialSpawn", "InitZenMode", function( ply )
@@ -30,7 +40,7 @@ hook.Add( "PlayerSay", "ZenModeCommands", function( ply, text )
         else
             ply:ChatPrint( "[ZEN] You have left Zen Mode." )
         end
-
+        return ''
     end
 end )
 
@@ -50,7 +60,7 @@ end )
 hook.Add( "EntityTakeDamage", "ZenMode_DamageHandler", function( ent, dmginfo )
     local attacker = dmginfo:GetAttacker()
 
-    if IsValid( attacker ) and IsOwnerZen( ent ) and attacker ~= ent:CPPIGetOwner() then
+    if IsValid( attacker ) and IsOwnerZen( ent ) and attacker ~= CPPIGetTopOwner( ent ) then
         return true
     end
 
@@ -65,17 +75,17 @@ hook.Add( "EntityTakeDamage", "ZenMode_DamageHandler", function( ent, dmginfo )
 end )
 
 hook.Add( "GravGunPickupAllowed", "ZenMode_GravGunPickup", function( ply, ent )
-    if IsValid( ent:CPPIGetOwner() ) and ent:CPPIGetOwner():GetNWBool( "ZenMode" ) and ply ~= ent:CPPIGetOwner() then
+    if IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetNWBool( "ZenMode" ) and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 
-    if ply:GetNWBool( "ZenMode" ) and ply ~= ent:CPPIGetOwner() then
+    if ply:GetNWBool( "ZenMode" ) and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 end )
 
 hook.Add( "AllowPlayerPickup", "ZenMode_PlayerUse", function( ply, ent )
-    if IsOwnerZen( ent ) and ply ~= ent:CPPIGetOwner() then
+    if IsOwnerZen( ent ) and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 end )
