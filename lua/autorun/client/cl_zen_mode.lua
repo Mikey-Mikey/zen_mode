@@ -23,9 +23,8 @@ local function RenderZen( ent )
     if ent == LocalPlayer() then
         if ent.oldRenderOverride ~= nil then
             ent.oldRenderOverride()
-        else
-            ent:DrawModel()
         end
+        ent:DrawModel()
         return
     end
 
@@ -42,9 +41,8 @@ local function RenderZen( ent )
     end
     if ent.oldRenderOverride ~= nil then
         ent.oldRenderOverride()
-    else
-        ent:DrawModel()
     end
+    ent:DrawModel()
 end
 
 net.Receive( "SetZenMode", function()
@@ -53,7 +51,7 @@ net.Receive( "SetZenMode", function()
     if state then
         for _, v in ents.Iterator() do
             if IsValid( v ) then
-                v.oldRenderOverride = v.RenderOverride
+                v.oldRenderOverride = v.oldRenderOverride or v.RenderOverride
                 v.RenderOverride = RenderZen
             end
         end
