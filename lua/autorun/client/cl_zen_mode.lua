@@ -16,33 +16,34 @@ local function IsOwnerZen( ent )
     return IsValid( owner ) and owner:GetNWBool( "ZenMode" )
 end
 
-local function RenderZen( self )
+local function RenderZen( ent )
+    if not IsValid( ent ) then return end
     render.SetBlend( 1 )
 
-    if self == LocalPlayer() then
-        if self.oldRenderOverride ~= nil then
-            self.oldRenderOverride()
+    if ent == LocalPlayer() then
+        if ent.oldRenderOverride ~= nil then
+            ent.oldRenderOverride()
         else
-            self:DrawModel()
+            ent:DrawModel()
         end
         return
     end
 
-    if ( IsOwnerZen( self ) or LocalPlayer():GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( self ) ~= LocalPlayer() and not self:IsWeapon() then
+    if ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() and not ent:IsWeapon() then
         render.SetBlend( cl_zenmode_opacity:GetFloat() )
     end
 
-    if ( LocalPlayer():GetNWBool( "ZenMode" ) or self:GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( self ) ~= LocalPlayer() and not self:IsWeapon() then
+    if ( LocalPlayer():GetNWBool( "ZenMode" ) or ent:GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() and not ent:IsWeapon() then
         render.SetBlend( cl_zenmode_opacity:GetFloat() )
     end
 
-    if self:IsWeapon() and ( self:GetOwner():GetNWBool( "ZenMode" ) or LocalPlayer():GetNWBool( "ZenMode" )  ) and self:GetOwner() ~= LocalPlayer() then
+    if ent:IsWeapon() and ( ent:GetOwner():GetNWBool( "ZenMode" ) or LocalPlayer():GetNWBool( "ZenMode" )  ) and ent:GetOwner() ~= LocalPlayer() then
         render.SetBlend( cl_zenmode_opacity:GetFloat() )
     end
-    if self.oldRenderOverride ~= nil then
-        self.oldRenderOverride()
+    if ent.oldRenderOverride ~= nil then
+        ent.oldRenderOverride()
     else
-        self:DrawModel()
+        ent:DrawModel()
     end
 end
 
