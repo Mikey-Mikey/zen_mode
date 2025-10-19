@@ -1,6 +1,7 @@
 local cl_zenmode_opacity = CreateClientConVar( "cl_zenmode_renderopacity", 0.15, true, false, "opacity of zen mode entities", 0, 1 )
 
 local function CPPIGetTopOwner( ent )
+    if not IsValid( ent ) then return end
     local topParent = ent
     while true do
         local parent = topParent:GetParent()
