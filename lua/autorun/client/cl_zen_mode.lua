@@ -26,10 +26,6 @@ local function RenderZen( ent )
 
     render.SetBlend( 1 )
 
-    if ent.oldRenderOverride ~= nil then
-        ent.oldRenderOverride( ent )
-    end
-
     if ent == LocalPlayer() then
         ent:DrawModel()
         return
