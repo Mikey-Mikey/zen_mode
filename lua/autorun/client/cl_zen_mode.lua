@@ -30,7 +30,7 @@ local function RenderZen( ent )
         if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
             ent:DrawModel()
         else
-            ent:DrawModel( STUDIO_DRAWTRANSLUCENTSUBMODELS )
+            ent:DrawModel( STUDIO_TWOPASS )
         end
         return
     end
@@ -54,7 +54,7 @@ local function RenderZen( ent )
     if ent:GetRenderGroup() == RENDERGROUP_OPAQUE then
         ent:DrawModel()
     else
-        ent:DrawModel( STUDIO_DRAWTRANSLUCENTSUBMODELS )
+        ent:DrawModel( STUDIO_TWOPASS )
     end
 end
 
