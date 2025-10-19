@@ -21,9 +21,11 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
+        --[[
         if ent.oldRenderOverride ~= nil then
             ent.oldRenderOverride()
         end
+        ]]
         ent:DrawModel()
         return
     end
@@ -39,9 +41,11 @@ local function RenderZen( ent )
     if ent:IsWeapon() and ( ent:GetOwner():GetNWBool( "ZenMode" ) or LocalPlayer():GetNWBool( "ZenMode" )  ) and ent:GetOwner() ~= LocalPlayer() then
         render.SetBlend( cl_zenmode_opacity:GetFloat() )
     end
+    --[[
     if ent.oldRenderOverride ~= nil then
         ent.oldRenderOverride()
     end
+    ]]
     ent:DrawModel()
 end
 
@@ -66,7 +70,7 @@ end )
 hook.Add( "InitPostEntity", "ZenMode_WaitForClient", function()
     hook.Add( "OnEntityCreated", "ZenMode_SyncClient", function( ent )
         if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) then
-            ent.oldRenderOverride = ent.RenderOverride
+            ent.oldRenderOverride = ent.oldRenderOverride or ent.RenderOverride
             ent.RenderOverride = RenderZen
         end
     end )
