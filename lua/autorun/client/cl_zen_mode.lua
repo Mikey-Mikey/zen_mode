@@ -11,7 +11,8 @@ local function CPPIGetTopOwner( ent )
 end
 
 local function IsOwnerZen( ent )
-    return IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetNWBool( "ZenMode" )
+    local owner = CPPIGetTopOwner( ent )
+    return IsValid( owner ) and owner:GetNWBool( "ZenMode" )
 end
 
 local function RenderZen( self )
@@ -62,10 +63,11 @@ net.Receive( "SetZenMode", function()
         end
     end
 end )
-
-hook.Add( "OnEntityCreated", "ZenMode_SyncClient", function( ent )
-    if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) then
-        ent.oldRenderOverride = ent.RenderOverride
-        ent.RenderOverride = RenderZen
-    end
+hook.Add( "InitPostEntity", "ZenMode_WaitForClient", function()
+    hook.Add( "OnEntityCreated", "ZenMode_SyncClient", function( ent )
+        if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) then
+            ent.oldRenderOverride = ent.RenderOverride
+            ent.RenderOverride = RenderZen
+        end
+    end )
 end )
