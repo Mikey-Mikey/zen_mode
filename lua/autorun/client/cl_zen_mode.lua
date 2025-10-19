@@ -39,7 +39,11 @@ local function RenderZen( ent )
 
     -- Draw the model to set the Depth Buffer values
 
-    ent:DrawModel()
+    if ent.oldRenderOverride ~= nil then
+        ent.oldRenderOverride( ent )
+    else
+        ent:DrawModel()
+    end
 
     -- Start drawing normally again
     render.OverrideColorWriteEnable( false, false )
@@ -71,7 +75,7 @@ end
 
 net.Receive( "SetZenMode", function()
     local state = net.ReadBool()
-    if LocalPlayer():GetZenMode() and state then return end
+    if LocalPlayer():GetZenMode() == state then return end
     if state then
         for _, v in ents.Iterator() do
             if IsValid( v ) then
