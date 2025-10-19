@@ -31,6 +31,14 @@ local function RenderZen( ent )
         return
     end
 
+    render.OverrideColorWriteEnable( true, false )
+
+    -- Draw the model to set the Depth Buffer values
+    ent:DrawModel()
+
+    -- Start drawing normally again
+    render.OverrideColorWriteEnable( false, false )
+
     if ent:IsWeapon() then -- Weapon rendering
         if ( ent:GetOwner():GetZenMode() or LocalPlayer():GetZenMode()  ) and ent:GetOwner() ~= LocalPlayer() then
             render.SetBlend( cl_zenmode_opacity:GetFloat() )
@@ -46,7 +54,10 @@ local function RenderZen( ent )
             render.SetBlend( cl_zenmode_opacity:GetFloat() )
         end
     end
+
     ent:DrawModel()
+
+    render.SetBlend( 1 )
 end
 
 net.Receive( "SetZenMode", function()
