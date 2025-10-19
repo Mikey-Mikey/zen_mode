@@ -74,7 +74,7 @@ end
 
 net.Receive( "SetZenMode", function()
     local state = net.ReadBool()
-
+    if LocalPlayer():GetZenMode() and state then return end
     if state then
         for _, v in ents.Iterator() do
             if IsValid( v ) then
