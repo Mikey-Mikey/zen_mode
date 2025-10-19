@@ -14,11 +14,12 @@ end
 
 local function IsOwnerZen( ent )
     local owner = CPPIGetTopOwner( ent )
-    return IsValid( owner ) and owner:GetNWBool( "ZenMode" )
+    return IsValid( owner ) and owner:GetZenMode()
 end
 
 local function RenderZen( ent )
     if not IsValid( ent ) then return end
+
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
@@ -27,17 +28,17 @@ local function RenderZen( ent )
     end
 
     if ent:IsWeapon() then -- Weapon rendering
-        if ( ent:GetOwner():GetNWBool( "ZenMode" ) or LocalPlayer():GetNWBool( "ZenMode" )  ) and ent:GetOwner() ~= LocalPlayer() then
+        if ( ent:GetOwner():GetZenMode() or LocalPlayer():GetZenMode()  ) and ent:GetOwner() ~= LocalPlayer() then
             render.SetBlend( cl_zenmode_opacity:GetFloat() )
         end
     else
         -- Entity rendering
-        if not ent:IsPlayer() and ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() then
+        if not ent:IsPlayer() and ( IsOwnerZen( ent ) or LocalPlayer():GetZenMode() ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() and ent:CPPIGetOwner() ~= LocalPlayer() then
             render.SetBlend( cl_zenmode_opacity:GetFloat() )
         end
 
         -- Player Rendering
-        if ent:IsPlayer() and ( LocalPlayer():GetNWBool( "ZenMode" ) or ent:GetNWBool( "ZenMode" ) ) then
+        if ent:IsPlayer() and ( LocalPlayer():GetZenMode() or ent:GetZenMode() ) then
             render.SetBlend( cl_zenmode_opacity:GetFloat() )
         end
     end
@@ -65,7 +66,7 @@ net.Receive( "SetZenMode", function()
 end )
 hook.Add( "InitPostEntity", "ZenMode_WaitForClient", function()
     hook.Add( "OnEntityCreated", "ZenMode_SyncClient", function( ent )
-        if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetNWBool( "ZenMode" ) ) then
+        if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetZenMode() ) then
             ent.oldRenderOverride = ent.oldRenderOverride or ent.RenderOverride
             ent.RenderOverride = RenderZen
         end
