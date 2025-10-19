@@ -38,11 +38,8 @@ local function RenderZen( ent )
     render.OverrideColorWriteEnable( true, false )
 
     -- Draw the model to set the Depth Buffer values
-    if ent.oldRenderOverride ~= nil then
-        ent.oldRenderOverride( ent )
-    else
-        ent:DrawModel()
-    end
+
+    ent:DrawModel()
 
     -- Start drawing normally again
     render.OverrideColorWriteEnable( false, false )
