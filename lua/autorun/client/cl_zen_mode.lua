@@ -22,7 +22,7 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
-        ent:DrawModel( STUDIO_TWOPASS )
+        ent:DrawModel()
         return
     end
 
@@ -42,7 +42,7 @@ local function RenderZen( ent )
         end
     end
 
-    ent:DrawModel( STUDIO_TWOPASS )
+    ent:DrawModel()
 end
 
 net.Receive( "SetZenMode", function()
