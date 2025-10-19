@@ -27,7 +27,7 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
-        ent:DrawModel( STUDIO_TWOPASS )
+        ent:DrawModel()
         return
     end
 
@@ -35,7 +35,7 @@ local function RenderZen( ent )
 
     -- Draw the model to set the Depth Buffer values
 
-    ent:DrawModel( STUDIO_TWOPASS )
+    ent:DrawModel()
 
     -- Start drawing normally again
     render.OverrideColorWriteEnable( false, false )
@@ -56,7 +56,7 @@ local function RenderZen( ent )
         end
     end
 
-    ent:DrawModel( STUDIO_TWOPASS )
+    ent:DrawModel()
 
     render.SetBlend( 1 )
 end
