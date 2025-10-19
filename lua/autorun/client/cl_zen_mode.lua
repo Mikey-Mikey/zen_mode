@@ -22,13 +22,7 @@ local function RenderZen( ent )
     render.SetBlend( 1 )
 
     if ent == LocalPlayer() then
-
-        if ent.oldRenderOverride ~= nil then
-            ent.oldRenderOverride()
-        else
-            ent:DrawModel( STUDIO_TWOPASS )
-        end
-
+        ent:DrawModel( STUDIO_TWOPASS )
         return
     end
 
@@ -48,12 +42,7 @@ local function RenderZen( ent )
         end
     end
 
-
-    if ent.oldRenderOverride ~= nil then
-        ent.oldRenderOverride()
-    else
-        ent:DrawModel( STUDIO_TWOPASS )
-    end
+    ent:DrawModel( STUDIO_TWOPASS )
 end
 
 net.Receive( "SetZenMode", function()
