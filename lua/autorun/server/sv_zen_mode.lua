@@ -71,7 +71,7 @@ hook.Add( "EntityTakeDamage", "ZenMode_DamageHandler", function( ent, dmginfo )
         return true
     end
 
-    if IsValid( attacker ) and attacker:GetZenMode() and ent:IsPlayer() and attacker ~= ent then
+    if IsValid( attacker ) and attacker:IsPlayer() and attacker:GetZenMode() and ent:IsPlayer() and attacker ~= ent then
         return true
     end
 
