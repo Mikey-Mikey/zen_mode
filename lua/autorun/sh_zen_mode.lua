@@ -33,12 +33,12 @@ hook.Add( "ShouldCollide", "ZenMode_ResolveCollisions", function( ent1, ent2 )
     end
 
     -- Player vs Entity collision
-    if ent1:IsPlayer() and not ent2:IsPlayer() and ( ent1:GetZenMode() or IsOwnerZen( ent2 ) ) then
+    if ent1:IsPlayer() and not ent2:IsPlayer() and ( ent1:GetZenMode() or IsOwnerZen( ent2 ) ) and IsValid( CPPIGetTopOwner( ent2 ) ) then
         return false
     end
 
     -- Entity vs Player collision
-    if ent2:IsPlayer() and not ent1:IsPlayer() and ( ent2:GetZenMode() or IsOwnerZen( ent1 ) ) then
+    if ent2:IsPlayer() and not ent1:IsPlayer() and ( ent2:GetZenMode() or IsOwnerZen( ent1 ) ) and IsValid( CPPIGetTopOwner( ent1 ) ) then
         return false
     end
 end )
