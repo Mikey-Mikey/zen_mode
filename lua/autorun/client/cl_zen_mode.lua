@@ -72,7 +72,7 @@ end )
 
 hook.Add( "InitPostEntity", "ZenMode_WaitForClient", function()
     hook.Add( "OnEntityCreated", "ZenMode_SyncClient", function( ent )
-        timer.Simple( 0.02, function()
+        timer.Simple( 0.05, function()
             if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetZenMode() ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() then
                 ent.RenderOverride = RenderZen
             end
