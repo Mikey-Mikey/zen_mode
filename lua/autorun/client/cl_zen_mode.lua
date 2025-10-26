@@ -31,15 +31,6 @@ local function RenderZen( ent )
         return
     end
 
-    render.OverrideColorWriteEnable( true, false )
-
-    -- Draw the model to set the Depth Buffer values
-
-    ent:DrawModel()
-
-    -- Start drawing normally again
-    render.OverrideColorWriteEnable( false, false )
-
     if ent:IsWeapon() then -- Weapon rendering
         if ( ent:GetOwner():GetZenMode() or LocalPlayer():GetZenMode()  ) and ent:GetOwner() ~= LocalPlayer() then
             render.SetBlend( cl_zenmode_opacity:GetFloat() )
@@ -66,24 +57,25 @@ net.Receive( "SetZenMode", function()
     if LocalPlayer():GetZenMode() == state then return end
     if state then
         for _, v in ents.Iterator() do
-            if IsValid( v ) then
+            if IsValid( v ) and CPPIGetTopOwner( v ) ~= LocalPlayer() then
                 v.oldRenderOverride = v.RenderOverride
                 v.RenderOverride = RenderZen
             end
         end
     else
         for _, v in ents.Iterator() do
-            if IsValid( v ) then
+            if IsValid( v ) and CPPIGetTopOwner( v ) ~= LocalPlayer() then
                 v.RenderOverride = v.oldRenderOverride
                 v.oldRenderOverride = nil
             end
         end
     end
 end )
+
 hook.Add( "InitPostEntity", "ZenMode_WaitForClient", function()
     hook.Add( "OnEntityCreated", "ZenMode_SyncClient", function( ent )
         timer.Simple( 0, function()
-            if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetZenMode() ) then
+            if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetZenMode() ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() then
                 if ent.oldRenderOverride == nil then
                     ent.oldRenderOverride = ent.RenderOverride
                 end
