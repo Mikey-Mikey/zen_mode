@@ -63,15 +63,18 @@ end )
 hook.Add( "EntityTakeDamage", "ZenMode_DamageHandler", function( ent, dmginfo )
     local attacker = dmginfo:GetAttacker()
 
+    -- Player vs Entity
     if IsValid( attacker ) and IsOwnerZen( ent ) and attacker ~= CPPIGetTopOwner( ent ) then
         return true
     end
 
-    if ent:IsPlayer() and ent:GetZenMode() and attacker ~= ent then
+    -- Player vs Player #1
+    if IsValid( attacker ) and ent:IsPlayer() and ent:GetZenMode() and attacker ~= ent then
         return true
     end
 
-    if IsValid( attacker ) and attacker:IsPlayer() and attacker:GetZenMode() and ent:IsPlayer() and attacker ~= ent then
+    -- Player vs Player #2
+    if IsValid( attacker ) and attacker:IsPlayer() and attacker:GetZenMode() and attacker ~= ent then
         return true
     end
 
