@@ -58,7 +58,6 @@ net.Receive( "SetZenMode", function()
     if state then
         for _, v in ents.Iterator() do
             if IsValid( v ) and CPPIGetTopOwner( v ) ~= LocalPlayer() then
-                v.oldRenderOverride = v.RenderOverride
                 v.RenderOverride = RenderZen
             end
         end
@@ -66,7 +65,6 @@ net.Receive( "SetZenMode", function()
         for _, v in ents.Iterator() do
             if IsValid( v ) and CPPIGetTopOwner( v ) ~= LocalPlayer() then
                 v.RenderOverride = v.oldRenderOverride
-                v.oldRenderOverride = nil
             end
         end
     end
@@ -74,11 +72,8 @@ end )
 
 hook.Add( "InitPostEntity", "ZenMode_WaitForClient", function()
     hook.Add( "OnEntityCreated", "ZenMode_SyncClient", function( ent )
-        timer.Simple( 0, function()
+        timer.Simple( 0.02, function()
             if IsValid( ent ) and ( IsOwnerZen( ent ) or LocalPlayer():GetZenMode() ) and CPPIGetTopOwner( ent ) ~= LocalPlayer() then
-                if ent.oldRenderOverride == nil then
-                    ent.oldRenderOverride = ent.RenderOverride
-                end
                 ent.RenderOverride = RenderZen
             end
         end )
