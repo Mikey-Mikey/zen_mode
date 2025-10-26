@@ -1,5 +1,15 @@
 util.AddNetworkString( "SetZenMode" )
 
+local ply_meta = FindMetaTable( "Player" )
+
+function ply_meta:SetZenMode( b )
+
+    self:SetNWBool( "ZenMode", b )
+    net.Start( "SetZenMode" )
+    net.WriteBool( b )
+    net.Broadcast()
+end
+
 local function CPPIGetTopOwner( ent )
     if not IsValid( ent ) then return end
 
@@ -22,16 +32,6 @@ hook.Add( "PlayerInitialSpawn", "InitZenMode", function( ply )
     ply:SetCustomCollisionCheck( true )
     ply:CollisionRulesChanged()
 end )
-
-local ply_meta = FindMetaTable( "Player" )
-
-function ply_meta:SetZenMode( b )
-
-    self:SetNWBool( "ZenMode", b )
-    net.Start( "SetZenMode" )
-    net.WriteBool( b )
-    net.Broadcast()
-end
 
 --- !zen chat command
 hook.Add( "PlayerSay", "ZenModeCommands", function( ply, text )
