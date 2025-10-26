@@ -3,7 +3,7 @@ util.AddNetworkString( "SetZenMode" )
 local ply_meta = FindMetaTable( "Player" )
 
 function ply_meta:SetZenMode( b )
-
+    if self:GetZenMode() == b then return end
     self:SetNWBool( "ZenMode", b )
     net.Start( "SetZenMode" )
     net.WriteBool( b )
