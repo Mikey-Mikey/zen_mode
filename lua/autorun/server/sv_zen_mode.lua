@@ -28,7 +28,7 @@ local function IsOwnerZen( ent )
 end
 
 hook.Add( "PlayerInitialSpawn", "InitZenMode", function( ply )
-    ply:SetNWBool( "ZenMode", false )
+    ply:SetZenMode( false )
     ply:SetCustomCollisionCheck( true )
     ply:CollisionRulesChanged()
 end )
@@ -67,22 +67,22 @@ hook.Add( "EntityTakeDamage", "ZenMode_DamageHandler", function( ent, dmginfo )
         return true
     end
 
-    if ent:GetNWBool( "ZenMode" ) and attacker ~= ent then
+    if ent:GetZenMode() and attacker ~= ent then
         return true
     end
 
-    if IsValid( attacker ) and attacker:GetNWBool( "ZenMode" ) and ent:IsPlayer() and attacker ~= ent then
+    if IsValid( attacker ) and attacker:GetZenMode() and ent:IsPlayer() and attacker ~= ent then
         return true
     end
 
 end )
 
 hook.Add( "GravGunPickupAllowed", "ZenMode_GravGunPickup", function( ply, ent )
-    if IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetNWBool( "ZenMode" ) and ply ~= CPPIGetTopOwner( ent ) then
+    if IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetZenMode() and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 
-    if ply:GetNWBool( "ZenMode" ) and ply ~= CPPIGetTopOwner( ent ) then
+    if ply:GetZenMode() and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 end )

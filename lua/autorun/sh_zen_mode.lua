@@ -23,12 +23,12 @@ end
 
 hook.Add( "ShouldCollide", "ZenMode_ResolveCollisions", function( ent1, ent2 )
     -- Entity vs Entity collision
-    if IsValid( CPPIGetTopOwner( ent1 ) ) and IsValid( CPPIGetTopOwner( ent2 ) ) and CPPIGetTopOwner( ent2 ) ~= CPPIGetTopOwner( ent1 ) and ( CPPIGetTopOwner( ent1 ):GenZenMode() or CPPIGetTopOwner( ent2 ):GenZenMode() ) then
+    if IsValid( CPPIGetTopOwner( ent1 ) ) and IsValid( CPPIGetTopOwner( ent2 ) ) and CPPIGetTopOwner( ent2 ) ~= CPPIGetTopOwner( ent1 ) and ( CPPIGetTopOwner( ent1 ):GetZenMode() or CPPIGetTopOwner( ent2 ):GetZenMode() ) then
         return false
     end
 
     -- Player vs Player collision
-    if ent1:IsPlayer() and ent2:IsPlayer() and ( ent1:GenZenMode() or ent2:GenZenMode() ) then
+    if ent1:IsPlayer() and ent2:IsPlayer() and ( ent1:GetZenMode() or ent2:GetZenMode() ) then
         return false
     end
 
@@ -44,11 +44,11 @@ hook.Add( "ShouldCollide", "ZenMode_ResolveCollisions", function( ent1, ent2 )
 end )
 
 hook.Add( "GravGunPunt", "ZenMode_GravGunPunt", function( ply, ent )
-    if IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GenZenMode() and ply ~= CPPIGetTopOwner( ent ) then
+    if IsValid( CPPIGetTopOwner( ent ) ) and CPPIGetTopOwner( ent ):GetZenMode() and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 
-    if ply:GenZenMode() and ply ~= CPPIGetTopOwner( ent ) then
+    if ply:GetZenMode() and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 end )
@@ -61,7 +61,7 @@ hook.Add( "CanTool", "ZenMode_CanTool", function( ply, tr )
         return false
     end
 
-    if ply:GenZenMode() and ply ~= CPPIGetTopOwner( ent ) then
+    if ply:GetZenMode() and ply ~= CPPIGetTopOwner( ent ) then
         return false
     end
 end )
